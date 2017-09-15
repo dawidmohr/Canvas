@@ -35,15 +35,12 @@
           return filter.apply(null, args);
         };
 
-        Filters.grayscale = function(pixels, args) {
+        Filters.opacity = function(pixels, args) {
 
-          var toGary = function(){
-            var r = d[i];
-            var g = d[i+1];
-            var b = d[i+2];
-            // CIE luminance for the RGB
-            var v = 0.2126*r + 0.7152*g + 0.0722*b;
-            d[i] = d[i+1] = d[i+2] = v;
+          var doWhatMustBeDone = function(){
+
+            var b = d[i+3];
+            d[i+3] = 0.2*b;
           }
 
           var d = pixels.data;
@@ -51,7 +48,7 @@
 
           for (var i=0; i<d.length ; i+=4) {
            if (i<cwidth*4*100 || i>cwidth*4*270 || cwidth>i%(cwidth*4)|| i%(cwidth*4)>cwidth*3 ){
-              toGary();
+              doWhatMustBeDone();
             }
           }
           return pixels;
@@ -189,7 +186,7 @@
         }
       }
 
-      grayscale = function() {
-        runFilter('grayscale', Filters.grayscale);
+      opacity = function() {
+        runFilter('opacity', Filters.opacity);
       }
     }, false);
